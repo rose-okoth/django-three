@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 # from .models import Post
-# from .forms import PostForm, RegistrationForm
+from .forms import ProjectForm
 from django.contrib.auth import authenticate, logout,login
 # from .email import send_welcome_email
 import datetime
@@ -28,3 +28,14 @@ def create_project(request):
         "form":form,
     }
     return render(request,"new_project.html",context)
+
+def project_detail(request,slug=None):
+    instance = get_object_or_404(Post, slug=slug)
+    share_string = quote_plus(instance.content)
+    context = {
+            "title":instance.title,
+            "instance":instance,
+            "share_string":share_string
+        }
+
+    return render(request,"project_detail.html",context)

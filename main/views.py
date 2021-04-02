@@ -58,3 +58,30 @@ def project_list(request):
             "title":"My Projects",
         }
     return render(request,"project_list.html", context)
+
+def project_update(request, slug=None):
+
+    '''Updating projects function'''
+
+    instance = get_object_or_404(Post, slug=slug)
+    form = ProjectForm(request.POST or None, request.FILES or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Project Updated!")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+            "title":instance.title,
+            "instance":instance,
+            "form":form,
+        }
+    return render(request,"new_project.html",context) 
+
+def project_delete(request, slug=None):
+
+    '''Deleting projects function'''
+
+    instance = get_object_or_404(Post, slug=slug)
+    instance.delete()
+    messages.success(request, "Successfully Deleted!")
+    return redirect("main:home")

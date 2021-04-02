@@ -85,3 +85,63 @@ def project_delete(request, slug=None):
     instance.delete()
     messages.success(request, "Successfully Deleted!")
     return redirect("main:home")
+
+def signup(request):
+
+    '''User signup function'''
+
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST or None)
+
+        if form.is_valid():
+            user = form.save()
+
+            raw_password = form.cleaned_data.get('password1')
+
+            print(request.POST)
+
+            user = authenticate(username=user.username, password=raw_password)
+            name = request.POST["username"]
+            email = request.POST["email"]
+            send_welcome_email(name,email)
+            # signin(request, user)
+
+            return redirect("main:home")
+
+    else:
+        form = RegistrationForm()
+
+    return render(request, "signup.html", {"form": form})
+
+
+def signin(request):
+
+    '''User signin function'''
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+    #   check credentials  
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+
+                login(request, user)
+                return redirect('main:home')
+            else:
+                # login(request, user)
+                return render(request, 'login.html', {"error": "Your account id is not active"})
+
+        else:
+            return render(request, 'login.html', {"error": "Invalid username or password"})
+
+    return render(request, 'login.html')
+
+def logout(request):
+
+    '''User logout function'''
+
+    logout(request)
+    return redirect('main:signin')

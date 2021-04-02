@@ -16,4 +16,15 @@ from django.contrib.auth.decorators import login_required
 def welcome(request):
     return render(request, 'welcome.html')
 
-# def create_project(request):
+def create_project(request):
+    form = ProjectForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        messages.success(request, "Post Successfully Created!")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form":form,
+    }
+    return render(request,"new_project.html",context)

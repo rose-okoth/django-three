@@ -10,5 +10,6 @@ class ProjectForm(forms.ModelForm):
             "title",
             "description",
             "image",
+            "link",
             "publish",   
         ]

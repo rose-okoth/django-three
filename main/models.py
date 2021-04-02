@@ -10,7 +10,7 @@ import datetime
 # Create your models here.
 class PostManager(models.Manager):
     def active(self, *args, **kwargs):
-        return super(PostManager, self).filter(draft=False).filter(publish__lte=timezone.now())
+        return super(PostManager, self).filter(publish__lte=timezone.now())
 
 def upload_location(instance, filename):
     return "%s/%s" %(instance.id, filename)

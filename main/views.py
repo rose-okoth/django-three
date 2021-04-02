@@ -39,3 +39,22 @@ def project_detail(request,slug=None):
         }
 
     return render(request,"project_detail.html",context)
+
+def project_list(request):
+    today = timezone.now().date()
+    queryset_list = Project.objects.active().order_by("-timestamp")
+    queryset_list = Project.objects.all()
+
+    query = request.GET.get("q")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(user__last_name__icontains=query) 
+            ).distinct()
+
+    context = {
+            "title":"My Projects",
+        }
+    return render(request,"project_list.html", context)

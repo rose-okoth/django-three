@@ -7,7 +7,7 @@ class ProjectModelAdmin(admin.ModelAdmin):
     list_display_links = ['updated']
     list_editable = ['title']
     list_filter = ['updated', 'timestamp']
-    search_fields = ['title', 'content']
+    search_fields = ['title', 'description']
 
     class Meta:
         model = Project

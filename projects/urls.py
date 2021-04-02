@@ -5,5 +5,5 @@ from main.views import welcome
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', welcome),
+    path('', include('main.urls')),
 ]

@@ -12,5 +12,4 @@ class ProjectModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Project
 
-
 admin.site.register(Project,ProjectModelAdmin)

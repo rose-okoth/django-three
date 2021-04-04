@@ -68,3 +68,10 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_receiver, sender=Project)
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = CloudinaryField(default='default.jpg')
+
+
+    def __str__(self):
+        return f'{self.user.username} Profile'

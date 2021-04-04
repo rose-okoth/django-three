@@ -70,7 +70,7 @@ pre_save.connect(pre_save_post_receiver, sender=Project)
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = CloudinaryField(default='default.jpg')
+    image = CloudinaryField(default='https://www.mcebiscoo.com/wp-content/uploads/2020/03/brothersrapelaptop.jpg')
 
 
     def __str__(self):

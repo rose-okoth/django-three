@@ -10,6 +10,7 @@ from .views import (
     project_signin,
     project_signup,
     project_logout,
+    user_profile
 )
 
 app_name = 'main'
@@ -18,6 +19,7 @@ urlpatterns = [
     path('', welcome, name='home'),
     path('list', project_list, name="list"),
     path('create', create_project, name='create'),
+    path('profile', user_profile, name='profile'),
     path('signin', project_signin, name='signin'),
     path('signup', project_signup, name='signup'),
     path('logout', project_logout, name='logout'),

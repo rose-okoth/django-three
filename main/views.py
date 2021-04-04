@@ -146,3 +146,6 @@ def project_logout(request):
 
     logout(request)
     return redirect('main:signin')
+
+def user_profile(request):
+    return render(request, 'profile.html')

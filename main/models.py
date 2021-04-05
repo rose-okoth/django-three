@@ -7,6 +7,7 @@ from django.utils import timezone
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 import datetime
+from PIL import Image
 
 # Create your models here.
 class PostManager(models.Manager):
@@ -71,8 +72,19 @@ pre_save.connect(pre_save_post_receiver, sender=Project)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = CloudinaryField(default='https://www.mcebiscoo.com/wp-content/uploads/2020/03/brothersrapelaptop.jpg')
-
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    bio = models.CharField(max_length=500, null=True, blank=True)
+    projects = models.ManyToManyField(Project)
 
     def __str__(self):
         return f'{self.user.username} Profile'
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)

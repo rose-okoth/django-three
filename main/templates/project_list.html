@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load bootstrap4 %}
+
 {% block head_title %}
 {{ obj.title}} | {{ block.super }}
 {% endblock %}
@@ -19,6 +21,7 @@
                 {% endif %}
                 <div class="caption">
                   <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><br/><small>{{ obj.publish}}</small></h3>
+                  <!-- <img class="rounded-circle z-depth-2" src="{{ obj.user.profile.image.url }}"> -->
                   {% if obj.user.get_full_name %}
                   <p>Author: {{ obj.user.get_full_name }}</p>
                   {% endif %}

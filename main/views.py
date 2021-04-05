@@ -21,7 +21,7 @@ def create_project(request):
     form = ProjectForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.user = request.user
+        instance.user = request.user.profile
         instance.save()
         messages.success(request, "Post Successfully Created!")
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -164,9 +164,13 @@ def user_profile(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
+
+    profile = request.user.profile.project.all
+
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'profile': profile
     }
 
     return render(request, 'profile.html', context)

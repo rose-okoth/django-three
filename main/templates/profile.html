@@ -2,15 +2,43 @@
 
 {% load crispy_forms_tags %}
 
+{% load bootstrap4 %}
+
 {% block content %}
 <div class="container">
     <div class="content-section">
         <div class="media">
             <img class="rounded-circle z-depth-2 account-img" src="{{ user.profile.image.url }}">
             <div class="media-body">
+
                 <h2 class="account-heading">{{ user.username }}</h2>
-                <p class="text-secondary">{{ user.email }}</p>
+                <p class="text-secondary">Contact: {{ user.email }}</p>
+                <p class="text-secondary">Bio: {{ user.profile.bio }}</p>
+                <p class="text-secondary">Projects: </p>
+
             </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+            <div class="row">
+                <div class="col-6 my-auto">
+                    <h2 class="font-weight-bold pt-4">Projects</h2>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                {% for p in profile %}
+                    <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+                        <div class="h-100">
+                            <img src="{{ p.project_image.url }}" class="card-img-top" alt="{{ p.project_title }}" style="width: auto; height: 225px; object-fit: scale-down;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ p.title }}</h5>
+                                <p class="card-text text-muted" style="font-size:12px">{{ p.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
         </div>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -26,3 +54,4 @@
     </div>
 </div>
 {% endblock %}
+

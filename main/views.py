@@ -12,6 +12,7 @@ from .email import send_welcome_email
 import datetime
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 def welcome(request):
     return render(request, 'welcome.html')

@@ -23,10 +23,11 @@
                     <a href="{% url 'main:create' %}">Create Post</a>
                   </li>
                   <li>
+                    <a href="{% url 'main:profile' %}">{{ user.username }}</a>
+                  </li>
+                  <li>
                     <a href="{% url 'main:logout' %}">Logout</a>
                   </li>
-                  <a class="nav-item nav-link" href="{% url 'main:profile' %}">Profile</a>
-
               
             </ul>
             {% else %}

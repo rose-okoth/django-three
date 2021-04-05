@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.conf import settings
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
 import datetime
 
 # Create your models here.
@@ -69,7 +70,7 @@ pre_save.connect(pre_save_post_receiver, sender=Project)
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = CloudinaryField(default='https://www.mcebiscoo.com/wp-content/uploads/2020/03/brothersrapelaptop.jpg')
 
 

@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from .models import Project
-from .forms import ProjectForm, RegistrationForm
+from .forms import ProjectForm, RegistrationForm, UserUpdateForm,ProfileUpdateForm
 from django.contrib.auth import authenticate, logout,login
 from .email import send_welcome_email
 import datetime
@@ -149,4 +149,24 @@ def project_logout(request):
     return redirect('main:signin')
 
 def user_profile(request):
-    return render(request, 'profile.html')
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile')
+
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'profile.html', context)

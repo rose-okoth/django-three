@@ -6,11 +6,12 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from .models import Project
-from .forms import ProjectForm, RegistrationForm
+from .forms import ProjectForm, RegistrationForm, UserUpdateForm,ProfileUpdateForm
 from django.contrib.auth import authenticate, logout,login
 from .email import send_welcome_email
 import datetime
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def welcome(request):
@@ -20,7 +21,7 @@ def create_project(request):
     form = ProjectForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.user = request.user
+        instance.user = request.user.profile
         instance.save()
         messages.success(request, "Post Successfully Created!")
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -146,3 +147,30 @@ def project_logout(request):
 
     logout(request)
     return redirect('main:signin')
+
+def user_profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('main:profile')
+
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+
+    profile = request.user.profile.project.all
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+        'profile': profile
+    }
+
+    return render(request, 'profile.html', context)

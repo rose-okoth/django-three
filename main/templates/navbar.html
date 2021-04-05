@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<!-- <div class="container-fluid">
     <div class="header">
       <div class="sides">
         <a href="{% url 'main:home' %}" class="logo">TWB</a>
@@ -21,6 +21,9 @@
       
                   <li>
                     <a href="{% url 'main:create' %}">Create Post</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'main:profile' %}">{{ user.username }}</a>
                   </li>
                   <li>
                     <a href="{% url 'main:logout' %}">Logout</a>
@@ -58,3 +61,70 @@
       </div>
     </div>
   </div>
+
+   -->
+
+   <div class="header">
+    <div class="sides">
+      <a href="{% url 'main:home' %}" class="logo">AWWWARDS</a>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid">
+    
+        <div class="collapse navbar-collapse" id="navbarExample01">
+          <div class="col-sm-4 col-md-4 navbar-right">
+
+    </div>
+    
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <!-- <li><a href="{% url 'main:home' %}">Home</a></li> -->
+        <li><a href="{% url 'main:list' %}">Projects</a></li>
+
+        {% if user.is_authenticated %}
+  
+              <li>
+                <a href="{% url 'main:create' %}">Create Post</a>
+              </li>
+              <li>
+                <a href="{% url 'main:profile' %}">{{ user.username }}</a>
+              </li>
+              <li>
+                <a href="{% url 'main:logout' %}">Logout</a>
+              </li>
+          
+        </ul>
+        {% else %}
+        <li>
+          <a href="{% url 'main:signin' %}">Login</a>
+        </li>
+        
+        <li>
+          <a href="{% url 'main:signup' %}">Sign Up</a>
+        </li>
+        {% endif %}
+      </ul>
+      
+      <div class="input-group">
+        <form method="GET" action="">
+          <input type="text" name="q" placeholder="Search..." value="{{ request.GET.q }}"/>
+          <input type="submit" value="Search"/>             
+        </form>
+      </div>
+
+  </form>
+    </div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="info">
+      <h1>AWWWARDS </h1>
+      <div class="meta">
+        <a  href="https://twitter.com/nodws" target="_b" class="author"></a><br>
+        By <a href="https://twitter.com/nodws" target="_b">Rose Okoth</a> on April 5, 2021
+      </div>
+    </div>
+  </div>
+  

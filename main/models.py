@@ -5,7 +5,11 @@ from django.utils.text import slugify
 from django.conf import settings
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import datetime
+from PIL import Image
 
 # Create your models here.
 class PostManager(models.Manager):
@@ -16,7 +20,7 @@ def upload_location(instance, filename):
     return "%s/%s" %(instance.id, filename)
 
 class Project(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
+    user = models.ForeignKey('Profile', default=1, on_delete=models.CASCADE, related_name='project')
     title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True)
     image = CloudinaryField(
@@ -68,3 +72,30 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_receiver, sender=Project)
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    bio = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
+
+    @receiver(post_save, sender=User)
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+
+    @receiver(post_save, sender=User)
+    def save_profile(sender, instance, **kwargs):
+        instance.profile.save()

@@ -7,14 +7,18 @@
 {% block content %}
 <div class="container">
     <div class="content-section">
+        <br\><br\><br\><br\>
+        <h1>Profile</h1>
         <div class="media">
-            <img class="rounded-circle z-depth-2 account-img" src="{{ user.profile.image.url }}">
+            <img class="rounded-circle z-depth-2" src="{{ user.profile.image.url }}">
             <div class="media-body">
 
-                <h2 class="account-heading">{{ user.username }}</h2>
-                <p class="text-secondary">Contact: {{ user.email }}</p>
-                <p class="text-secondary">Bio: {{ user.profile.bio }}</p>
-                <p class="text-secondary">Projects: </p>
+                <h2 class="font-weight-bold pt-4">Username</h2>
+                <p class="text-secondary">{{ user.username }}</p>
+                <h2 class="font-weight-bold pt-4">Contact</h2>
+                <p class="text-secondary">{{ user.email }}</p>
+                <h2 class="font-weight-bold pt-4">Bio</h2>
+                <p class="text-secondary">{{ user.profile.bio }}</p>
 
             </div>
         </div>

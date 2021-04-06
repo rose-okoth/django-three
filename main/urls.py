@@ -28,4 +28,5 @@ urlpatterns = [
     re_path(r'^(?P<slug>[\w-]+)/edit/$', project_update, name='update'),
     re_path(r'^(?P<slug>[\w-]+)/delete/$', project_delete, name='delete'),
     path('api/profile/', views.ProfileList.as_view()),
+    path('api/project/', views.ProjectList.as_view()),
 ]

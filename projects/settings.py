@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'bootstrap3',
     'cloudinary',
     'bootstrap4',
-    'crispy_forms'
+    'crispy_forms',
+    'rest_framework',
 ]
 
 #add config 

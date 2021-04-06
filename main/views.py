@@ -13,7 +13,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializer import ProfileSerializer
+from .serializer import ProfileSerializer, ProjectSerializer
 
 
 # Create your views here.

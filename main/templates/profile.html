@@ -19,11 +19,17 @@
                 <p class="text-secondary">{{ user.email }}</p>
                 <h2 class="font-weight-bold pt-4">Bio</h2>
                 <p class="text-secondary">{{ user.profile.bio }}</p>
+                <h2 class="font-weight-bold pt-4">Projects</h2>
+                {% for p in profile %}
+                    <p class="text-secondary">{{ p.title }}</p>
+                    <!-- <p class="card-text text-muted" style="font-size:12px">{{ p.description }}</p> -->
+                {% endfor %}
 
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+        <br\><br\><br\>
+        <!-- <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
             <div class="row">
                 <div class="col-6 my-auto">
                     <h2 class="font-weight-bold pt-4">Projects</h2>
@@ -43,7 +49,9 @@
                     </div>
                 {% endfor %}
         </div>
-        </div>
+        </div> -->
+        <br\><br\><br\>
+        
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">

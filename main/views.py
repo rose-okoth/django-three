@@ -56,7 +56,7 @@ def project_list(request):
             ).distinct()
 
     context = {
-            "title":"My Projects",
+            "title":"Projects",
             "object_list":queryset
         }
     return render(request,"project_list.html", context)

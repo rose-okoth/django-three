@@ -5,12 +5,15 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
-from .models import Project
+from .models import Project,Profile
 from .forms import ProjectForm, RegistrationForm, UserUpdateForm,ProfileUpdateForm
 from django.contrib.auth import authenticate, logout,login
 from .email import send_welcome_email
 import datetime
 from django.contrib.auth.decorators import login_required
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializer import ProfileSerializer
 
 
 # Create your views here.
@@ -174,3 +177,9 @@ def user_profile(request):
     }
 
     return render(request, 'profile.html', context)
+
+class ProfileList(APIView):
+    def get(self, request, format=None):
+        all_profile = Profile.objects.all()
+        serializers = ProfileSerializer(all_profile, many=True)
+        return Response(serializers.data)

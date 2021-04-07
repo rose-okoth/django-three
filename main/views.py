@@ -146,7 +146,7 @@ def project_signup(request):
             send_welcome_email(name,email)
             # signin(request, user)
 
-            return redirect("main:home")
+            return redirect("main:signin")
 
     else:
         form = RegistrationForm()

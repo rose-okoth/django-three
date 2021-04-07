@@ -95,7 +95,7 @@ html,body{
   }
   .sides, .info{
     flex: 0 0 auto;
-    width:50%
+    width:100%
   }
   .info{
     width:100%;

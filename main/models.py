@@ -99,3 +99,13 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+class Review(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name="review")
+    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name="review")
+    design_rating = models.FloatField(null=True, blank=True)
+    usability_rating = models.FloatField(null=True, blank=True)
+    content_rating = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user.bio} Project'

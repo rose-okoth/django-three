@@ -18,9 +18,18 @@ from django.db.models import Avg
 
 # Create your views here.
 def welcome(request):
+    '''
+    A function for the welcome
+    
+    '''
     return render(request, 'welcome.html')
 
+@login_required(login_url='main:signin')
 def create_project(request):
+    '''
+    A function for creating new projects
+    
+    '''
     form = ProjectForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -33,7 +42,12 @@ def create_project(request):
     }
     return render(request,"new_project.html",context)
 
+@login_required(login_url='main:signin')
 def project_detail(request,slug=None):
+    '''
+    A function for showcasing the list of projects in more detail
+    
+    '''
     instance = get_object_or_404(Project, slug=slug)
     share_string = quote_plus(instance.description)
     reviews = Review.objects.filter()
@@ -60,6 +74,10 @@ def project_detail(request,slug=None):
 
 
 def project_list(request):
+    '''
+    A function for showcasing the list of projects posted
+    
+    '''
     today = timezone.now().date()
     queryset_list = Project.objects.active().order_by("-timestamp")
     queryset = Project.objects.all()
@@ -79,6 +97,7 @@ def project_list(request):
         }
     return render(request,"project_list.html", context)
 
+@login_required(login_url='main:signin')
 def project_update(request, slug=None):
 
     '''Updating projects function'''
@@ -97,6 +116,7 @@ def project_update(request, slug=None):
         }
     return render(request,"new_project.html",context) 
 
+@login_required(login_url='main:signin')
 def project_delete(request, slug=None):
 
     '''Deleting projects function'''
@@ -166,7 +186,12 @@ def project_logout(request):
     logout(request)
     return redirect('main:signin')
 
+@login_required(login_url='main:signin')
 def user_profile(request):
+    '''
+    A function for creating the user profile and updating
+    
+    '''
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
@@ -193,8 +218,12 @@ def user_profile(request):
 
     return render(request, 'profile.html', context)
 
-
+@login_required(login_url='main:signin')
 def add_review(request, slug=None):
+    '''
+    A function for adding reviews to the projects
+    
+    '''
     if request.user.is_authenticated:
         project = Project.objects.get(slug=slug)
         if request.method == 'POST':
@@ -210,7 +239,7 @@ def add_review(request, slug=None):
             form = ReviewForm()
         return render(request, 'project_detail.html', {'form': form, 'project':project})
     else:
-        return redirect('main:login')
+        return redirect('main:signin')
 
 
 class ProfileList(APIView):

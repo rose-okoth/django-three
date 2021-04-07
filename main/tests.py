@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import *
+import datetime as dt
+from django.contrib.auth.models import User
 
 class UserTestClass(TestCase):
 

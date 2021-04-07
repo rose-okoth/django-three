@@ -11,7 +11,8 @@ from .views import (
     project_signin,
     project_signup,
     project_logout,
-    user_profile
+    user_profile,
+    add_review
 )
 
 app_name = 'main'
@@ -27,6 +28,8 @@ urlpatterns = [
     re_path(r'^(?P<slug>[\w-]+)/detail/$', project_detail, name='detail'),
     re_path(r'^(?P<slug>[\w-]+)/edit/$', project_update, name='update'),
     re_path(r'^(?P<slug>[\w-]+)/delete/$', project_delete, name='delete'),
+    re_path(r'^(?P<slug>[\w-]+)/review/$', add_review, name='review'),
+    # path('addreviews/(?P<slug>[\w-]+)/review/', views.add_review, name='review'),
     path('api/profile/', views.ProfileList.as_view()),
     path('api/project/', views.ProjectList.as_view()),
 ]

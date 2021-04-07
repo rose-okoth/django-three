@@ -58,8 +58,8 @@ An application like Awwards, that allows a user to post a project he/she has cre
 
 # API Endpoints
 
-* [http://127.0.0.1:8000/api/project/](http://127.0.0.1:8000/api/project/)
-* [http://127.0.0.1:8000/api/profile/](http://127.0.0.1:8000/api/profile/)
+* [https://fauxwwwards.herokuapp.com/api/project/](https://fauxwwwards.herokuapp.com/api/project/)
+* [https://fauxwwwards.herokuapp.com/api/profile/](https://fauxwwwards.herokuapp.com/api/profile/)
     
 # Technologies Used
 

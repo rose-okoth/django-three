@@ -5,8 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
-from .models import Project,Profile
-from .forms import ProjectForm, RegistrationForm, UserUpdateForm,ProfileUpdateForm
+from .models import Project,Profile,Review
+from .forms import ProjectForm, RegistrationForm, UserUpdateForm, ProfileUpdateForm, ReviewForm
 from django.contrib.auth import authenticate, logout,login
 from .email import send_welcome_email
 import datetime
@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import ProfileSerializer, ProjectSerializer
-
+from django.db.models import Avg
 
 # Create your views here.
 def welcome(request):
@@ -36,7 +36,7 @@ def create_project(request):
 def project_detail(request,slug=None):
     instance = get_object_or_404(Project, slug=slug)
     share_string = quote_plus(instance.description)
-    reviews = Review.objects.filter(project=id).order_by('-comment')
+    reviews = Review.objects.filter()
     
     average1 = reviews.aggregate(Avg("design_rating"))["design_rating__avg"]
     average2 = reviews.aggregate(Avg("usability_rating"))["usability_rating__avg"]
@@ -50,13 +50,13 @@ def project_detail(request,slug=None):
     context = {
             "title":instance.title,
             "instance":instance,
-            "share_string":share_string'
-            "project": project,
+            "share_string":share_string,
+            "instance": instance,
             "reviews": reviews,
             "average": average,
         }
 
-    return render(request,"project_detail.html",context)
+    return render(request, "project_detail.html", context)
 
 
 def project_list(request):
@@ -194,9 +194,9 @@ def user_profile(request):
     return render(request, 'profile.html', context)
 
 
-def add_review(request, id):
+def add_review(request, slug=None):
     if request.user.is_authenticated:
-        project = Project.objects.get(id=id)
+        project = Project.objects.get(slug=slug)
         if request.method == 'POST':
             form = ReviewForm(request.POST or None)
             print(form.errors)
@@ -205,7 +205,7 @@ def add_review(request, id):
                 data.user = request.user.profile
                 data.project = project
                 data.save()
-                return redirect('main:detail', id)
+                return redirect('main:detail', slug)
         else:
             form = ReviewForm()
         return render(request, 'project_detail.html', {'form': form, 'project':project})

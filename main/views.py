@@ -36,13 +36,28 @@ def create_project(request):
 def project_detail(request,slug=None):
     instance = get_object_or_404(Project, slug=slug)
     share_string = quote_plus(instance.description)
+    reviews = Review.objects.filter(project=id).order_by('-comment')
+    
+    average1 = reviews.aggregate(Avg("design_rating"))["design_rating__avg"]
+    average2 = reviews.aggregate(Avg("usability_rating"))["usability_rating__avg"]
+    average3 = reviews.aggregate(Avg("content_rating"))["content_rating__avg"]
+    average = (average1 + average2 + average3) / 3
+
+    if average == None:
+        average = 0
+    average = round(average, 2)
+
     context = {
             "title":instance.title,
             "instance":instance,
-            "share_string":share_string
+            "share_string":share_string'
+            "project": project,
+            "reviews": reviews,
+            "average": average,
         }
 
     return render(request,"project_detail.html",context)
+
 
 def project_list(request):
     today = timezone.now().date()
@@ -177,6 +192,26 @@ def user_profile(request):
     }
 
     return render(request, 'profile.html', context)
+
+
+def add_review(request, id):
+    if request.user.is_authenticated:
+        project = Project.objects.get(id=id)
+        if request.method == 'POST':
+            form = ReviewForm(request.POST or None)
+            print(form.errors)
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.user = request.user.profile
+                data.project = project
+                data.save()
+                return redirect('main:detail', id)
+        else:
+            form = ReviewForm()
+        return render(request, 'project_detail.html', {'form': form, 'project':project})
+    else:
+        return redirect('main:login')
+
 
 class ProfileList(APIView):
     def get(self, request, format=None):

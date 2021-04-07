@@ -12,9 +12,9 @@ An application like Awwards, that allows a user to post a project he/she has cre
 ​
 # Screenshots
 
-![Alt text](/static/images/Screenshot.png?raw=true "Landing Page")
+![Alt text](/media/Screenshot.png?raw=true "Landing Page")
 
-![Alt text](/static/images/Screenshot-1.png?raw=true "Blog Post")
+![Alt text](/media/Screenshot-1.png?raw=true "Project Post")
 
 # BDD
 
